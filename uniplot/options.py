@@ -50,6 +50,8 @@ class Options:
     y_min: float = 0.0
     # Units of y axis
     y_unit: str = ""
+    # Overwrite Terminal Output
+    overwrite: bool = False
 
     def __post_init__(self):
         # Validate values

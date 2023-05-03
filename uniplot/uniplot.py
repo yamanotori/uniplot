@@ -26,9 +26,14 @@ def plot(ys: Any, xs: Optional[Any] = None, **kwargs) -> None:
     series: MultiSeries = MultiSeries(xs=xs, ys=ys)
     options: Options = validate_and_transform_options(series=series, kwargs=kwargs)
 
+    LINE_UP = '\033[1A'
+    LINE_CLEAR = '\x1b[2K'
+
+    output = ""
     # Print header
     for line in _generate_header(options):
-        print(line)
+        #print(line)
+        output += line + '\n'
 
     # Main loop for interactive mode. Will only be executed once when not in interactive # mode.
     continue_looping: bool = True
@@ -54,7 +59,18 @@ def plot(ys: Any, xs: Optional[Any] = None, **kwargs) -> None:
         for line in _generate_body(
             x_axis_labels, y_axis_labels, pixel_character_matrix, options
         ):
-            print(line)
+            #print(line)
+            output += line + '\n'
+            
+        print(output)
+        if options.overwrite and not options.interactive:
+            for i in range(
+                sum(1 for _ in _generate_header(options)) + 
+                sum(1 for _ in _generate_body(
+                    x_axis_labels, y_axis_labels, pixel_character_matrix, options
+                ))
+                + 1):
+                print(LINE_UP, end=LINE_CLEAR)
 
         if options.interactive:
             print("Move h/j/k/l, zoom u/n, or r to reset. ESC/q to quit")
