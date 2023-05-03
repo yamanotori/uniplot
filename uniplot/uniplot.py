@@ -32,7 +32,6 @@ def plot(ys: Any, xs: Optional[Any] = None, **kwargs) -> None:
     output = ""
     # Print header
     for line in _generate_header(options):
-        #print(line)
         output += line + '\n'
 
     # Main loop for interactive mode. Will only be executed once when not in interactive # mode.
@@ -59,17 +58,17 @@ def plot(ys: Any, xs: Optional[Any] = None, **kwargs) -> None:
         for line in _generate_body(
             x_axis_labels, y_axis_labels, pixel_character_matrix, options
         ):
-            #print(line)
             output += line + '\n'
             
         print(output)
         if options.overwrite and not options.interactive:
             for i in range(
+                # Add all the lines that were printed + 2 trailing newlines
                 sum(1 for _ in _generate_header(options)) + 
                 sum(1 for _ in _generate_body(
                     x_axis_labels, y_axis_labels, pixel_character_matrix, options
                 ))
-                + 1):
+                + 2):
                 print(LINE_UP, end=LINE_CLEAR)
 
         if options.interactive:
